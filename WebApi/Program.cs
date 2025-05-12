@@ -4,7 +4,7 @@ using WebApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Host.ConfigureHostOptions(opt => opt.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -22,20 +22,20 @@ builder.Services.AddSingleton<Channel<ChannelRequest>>(_ => Channel.CreateUnboun
 //DropNewest: En son ekleneni listeden atar
 //DropOldest: İlk ekleneni listeden atar
 //DropWrite: Liste dolduğu anda diğerlerini işlemden atar.
-// builder.Services.AddSingleton<Channel<ChannelRequest>>(_ => Channel.CreateBounded<ChannelRequest>(new BoundedChannelOptions(2)
-// {
-//     FullMode = BoundedChannelFullMode.Wait,
-//     SingleReader = true,
-//     AllowSynchronousContinuations = false
-// }));
+//builder.Services.AddSingleton<Channel<ChannelRequest>>(_ => Channel.CreateBounded<ChannelRequest>(new BoundedChannelOptions(1)
+//{
+//    FullMode = BoundedChannelFullMode.Wait,
+//    SingleReader = true,
+//    AllowSynchronousContinuations = false
+//}));
 
 //CreateUnboundedPrioritized Comparerda belirtilen önem sırası karşılaştırmasına göre sıradaki işlemleri önceliklendirir.
-// builder.Services.AddSingleton<Channel<ChannelRequest>>(_ => Channel.CreateUnboundedPrioritized(new UnboundedPrioritizedChannelOptions<ChannelRequest>
-// {
-//     Comparer = Comparer<ChannelRequest>.Create((req1,req2)=> req1.Message.Length.CompareTo(req2.Message.Length)),
-//     SingleReader = true,
-//     AllowSynchronousContinuations = false
-// }));
+//builder.Services.AddSingleton<Channel<ChannelRequest>>(_ => Channel.CreateUnboundedPrioritized(new UnboundedPrioritizedChannelOptions<ChannelRequest>
+//{
+//    Comparer = Comparer<ChannelRequest>.Create((req1, req2) => req1.Message.Length.CompareTo(req2.Message.Length)),
+//    SingleReader = true,
+//    AllowSynchronousContinuations = false
+//}));
 
 var app = builder.Build();
 

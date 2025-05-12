@@ -8,17 +8,12 @@ namespace WebApi.Controllers;
 public class WeatherForecastController(ILogger<WeatherForecastController> logger, Channel<ChannelRequest> channel)
     : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
-
     private readonly ILogger<WeatherForecastController> _logger = logger;
 
     [HttpGet]
-    public async Task<IActionResult> Send()
+    public async Task<IActionResult> Send(int request)
     {
-        await channel.Writer.WriteAsync(new ChannelRequest($"Hello World! {DateTime.UtcNow}"));
+        await channel.Writer.WriteAsync(new ChannelRequest($"Hello World! {DateTime.UtcNow}", request));
 
         return Ok();
     }
